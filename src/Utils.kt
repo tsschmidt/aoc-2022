@@ -5,8 +5,27 @@ import java.security.MessageDigest
 /**
  * Reads lines from the given input txt file.
  */
-fun readInput(name: String) = File("src", "$name.txt")
+fun readInput(name: String) = File("data", "$name.txt")
     .readLines()
+
+/**
+ * Reads comma separated integers from file.
+ */
+fun readInts(name: String) = readInput(name).map { it.split(",") }.flatten().map { it.toInt() }
+
+fun groupByNewLine(input: List<String>): List<List<String>> {
+    val outer = mutableListOf<List<String>>()
+    var inner = mutableListOf<String>()
+    input.forEach {
+        if (it.isEmpty()) {
+            outer.add(inner);
+            inner = mutableListOf<String>()
+        } else {
+            inner.add(it)
+        }
+    }
+    return outer
+}
 
 /**
  * Converts string to md5 hash.
