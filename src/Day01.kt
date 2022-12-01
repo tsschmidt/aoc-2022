@@ -8,7 +8,7 @@ fun main() {
         return input.map { e -> e.sumOf { it.toInt() } }.sortedDescending().take(3).sum()
     }
 
-    val input = groupByNewLine(readInput("Day01"))
+    val input = readInput("Day01").chunkBy { it.isEmpty() }
     println(part1(input))
     println(part2(input))
 }
