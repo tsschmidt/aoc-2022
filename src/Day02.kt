@@ -1,21 +1,19 @@
+const val ROCK = "A"
+const val PAPER = "B"
+const val SCISSORS = "C"
+
+const val LOSE = "X"
+const val DRAW = "Y"
+const val WIN = "Z"
+
 fun main() {
-
-    val ROCK = "A"
-    val PAPER = "B"
-    val SCISSORS = "C"
-
 
     fun outcome(a: String, b: String): Int {
         return when (a+b) {
-            "AA" -> 3
-            "AB" -> 6
-            "AC" -> 0
-            "BA" -> 0
-            "BB" -> 3
-            "BC" -> 6
-            "CA" -> 6
-            "CB" -> 0
-            else -> 3
+            "AA", "BB", "CC" -> 3
+            "AB", "BC", "CA" -> 6
+            "AC", "BA", "CB" -> 0
+            else -> error("Check Inputs")
         }
     }
 
@@ -23,7 +21,8 @@ fun main() {
         return when(a) {
             ROCK -> 1
             PAPER -> 2
-            else -> 3
+            SCISSORS -> 3
+            else -> error("Check Inputs")
         }
     }
 
@@ -31,45 +30,48 @@ fun main() {
         val b1 = when (b) {
             "X" -> ROCK
             "Y" -> PAPER
-            else -> SCISSORS
+            "Z" -> SCISSORS
+            else -> error("Check Inputs")
         }
         return outcome(a, b1) + points(b1)
     }
 
     fun round2(a: String, b: String): Int {
         val b1 = when(b) {
-            "X" -> when (a) {
+            LOSE -> when (a) {
                 ROCK -> SCISSORS
                 PAPER -> ROCK
                 else -> PAPER
             }
-            "Z" -> when(a) {
+            WIN -> when(a) {
                 ROCK -> PAPER
                 PAPER -> SCISSORS
                 else -> ROCK
             }
-            else -> a
+            DRAW -> a
+            else -> error("Check Inputs")
         }
         return outcome(a, b1) + points(b1)
     }
 
     fun part1(input: List<String>): Int {
-        println(input)
-        val sum = input.sumOf { round(it.split(" ")[0], it.split(" ")[1]) }
-        println(sum)
-        return sum
+        return input.sumOf {
+            val (a, b) = it.split(" ")
+            round(a, b)
+        }
     }
 
     fun part2(input: List<String>): Int {
-        val sum = input.sumOf {  round2(it.split(" ")[0], it.split(" ")[1]) }
-        println(sum)
-        return sum
+        return input.sumOf {
+            val (a, b) = it.split(" ")
+            round2(a, b)
+        }
     }
 
     //val input = readInput("Day02_test")
     //check(part2(input) == 12)
 
     val input = readInput("Day02")
-    //println(part1(input))
+    println(part1(input))
     println(part2(input))
 }
