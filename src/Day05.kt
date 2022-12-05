@@ -1,52 +1,50 @@
-import java.util.Stack
 
 fun main() {
 
-    fun parseStacks(input: List<String>): List<Stack<Char>> {
+    fun parseDequed(input: List<String>): List<ArrayDeque<Char>> {
         val numStacks = input[0].length / 3
-        val stacks = mutableListOf<Stack<Char>>()
-        repeat(numStacks) { stacks.add(Stack<Char>()) }
+        val stacks = mutableListOf<ArrayDeque<Char>>()
+        repeat(numStacks) { stacks.add(ArrayDeque<Char>()) }
         input.takeWhile { it.contains('[') }.forEach {
             it.chunked(4).forEachIndexed { index, s ->
                 if (s.isNotBlank()) {
-                    stacks[index].push(s[1])
+                    stacks[index].addLast(s[1])
                 }
             }
         }
         stacks.forEach { it.reverse() }
         return stacks
     }
-
-
+    
     fun part1(input: List<String>): String {
         val (s, m) = input.chunkBy { it.isEmpty() }
-        val stacks = parseStacks(s)
+        val stacks = parseDequed(s)
         m.forEach {
             val moves = it.split(" ")
             val amt = moves[1].toInt()
             val from = moves[3].toInt() - 1
             val to = moves[5].toInt() - 1
-            repeat(amt) { stacks[to].push(stacks[from].pop()) }
+            repeat(amt) { stacks[to].addLast(stacks[from].removeLast()) }
         }
         var ret = ""
-        stacks.forEach { ret += if (it.isNotEmpty()) it.pop() else "" }
+        stacks.forEach { ret += if (it.isNotEmpty()) it.removeLast() else "" }
         return ret
     }
 
     fun part2(input: List<String>): String {
         val (s, m) = input.chunkBy { it.isEmpty() }
-        val stacks = parseStacks(s)
+        val stacks = parseDequed(s)
         m.forEach {
             val moves = it.split(" ")
             val amt = moves[1].toInt()
             val from = moves[3].toInt() - 1
             val to = moves[5].toInt() - 1
-            val temp = Stack<Char>()
-            repeat(amt) { temp.push(stacks[from].pop())}
-            repeat(amt) { stacks[to].push(temp.pop())}
+            val temp = ArrayDeque<Char>()
+            repeat(amt) { temp.addLast(stacks[from].removeLast())}
+            repeat(amt) { stacks[to].addLast(temp.removeLast())}
         }
         var ret = ""
-        stacks.forEach { ret += if (it.isNotEmpty()) it.pop() else "" }
+        stacks.forEach { ret += if (it.isNotEmpty()) it.removeLast() else "" }
         return ret 
     }
 
