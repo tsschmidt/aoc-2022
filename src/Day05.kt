@@ -4,15 +4,14 @@ fun main() {
     fun parseDequed(input: List<String>): List<ArrayDeque<Char>> {
         val numStacks = input[0].length / 3
         val stacks = mutableListOf<ArrayDeque<Char>>()
-        repeat(numStacks) { stacks.add(ArrayDeque<Char>()) }
+        repeat(numStacks) { stacks.add(ArrayDeque()) }
         input.takeWhile { it.contains('[') }.forEach {
             it.chunked(4).forEachIndexed { index, s ->
                 if (s.isNotBlank()) {
-                    stacks[index].addLast(s[1])
+                    stacks[index].addFirst(s[1])
                 }
             }
         }
-        stacks.forEach { it.reverse() }
         return stacks
     }
     
@@ -26,9 +25,8 @@ fun main() {
             val to = moves[5].toInt() - 1
             repeat(amt) { stacks[to].addLast(stacks[from].removeLast()) }
         }
-        var ret = ""
-        stacks.forEach { ret += if (it.isNotEmpty()) it.removeLast() else "" }
-        return ret
+        return stacks.map { if (it.isNotEmpty()) it.removeLast() else "" }.joinToString("")
+        
     }
 
     fun part2(input: List<String>): String {
@@ -43,9 +41,7 @@ fun main() {
             repeat(amt) { temp.addLast(stacks[from].removeLast())}
             repeat(amt) { stacks[to].addLast(temp.removeLast())}
         }
-        var ret = ""
-        stacks.forEach { ret += if (it.isNotEmpty()) it.removeLast() else "" }
-        return ret 
+        return stacks.map { if (it.isNotEmpty()) it.removeLast() else "" }.joinToString("")
     }
 
     //val input = readInput("Day05_test")
