@@ -23,10 +23,10 @@ fun main() {
         input.drop(1).forEach { 
             if (it.startsWith("$ cd")) {
                 val d = it.split(" ").last()
-                if (d == "..") {
-                    node = node.parent ?: throw IndexOutOfBoundsException("")
+                node = if (d == "..") {
+                    node.parent ?: throw IndexOutOfBoundsException("")
                 } else {
-                    node = node.dirs.find { it.name == d } ?: throw InvalidParameterException("")
+                    node.dirs.find { it.name == d } ?: throw InvalidParameterException("")
                 }
             } else if (it.contains("dir")) {
                 val d = it.split(" ").last()
