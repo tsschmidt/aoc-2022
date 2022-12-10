@@ -78,8 +78,8 @@ fun main() {
     
     fun part1(input: List<String>): Int {
         val map = parseMap(input)
-        var width = map[0].size
-        var height = map.size
+        val width = map[0].size
+        val height = map.size
         var count = 0
         for (r in 1..width - 2) {
             for (c in 1..height -2) {
@@ -95,25 +95,22 @@ fun main() {
         return count
     }
 
-    fun part2(input: List<String>): Long {
+    fun part2(input: List<String>): Int {
         val map = parseMap(input)
-        map.forEach { println(it) }
-        var width = map[0].size
-        var height = map.size
-        var max = 0L
+        val width = map[0].size
+        val height = map.size
+        var max = 0
         for (r in 1..height - 2) {
             for (c in 1..width - 2) {
-                val d = viewDown(r + 1, c, map[r][c], map, 1)
-                val u = viewUp(r - 1, c, map[r][c], map, 1)
-                val rt = viewRight(r, c + 1, map[r][c], map, 1) 
-                val l = viewLeft(r, c - 1, map[r][c], map, 1)
-                val cur = d.toLong() * u.toLong() * rt.toLong() * l.toLong()
+                val cur = viewDown(r + 1, c, map[r][c], map, 1) *
+                    viewUp(r - 1, c, map[r][c], map, 1) *
+                    viewRight(r, c + 1, map[r][c], map, 1) * 
+                    viewLeft(r, c - 1, map[r][c], map, 1)
                 if (cur > max) {
                     max = cur
                 }
             }
         }
-        println(max)
         return max
     }
 
